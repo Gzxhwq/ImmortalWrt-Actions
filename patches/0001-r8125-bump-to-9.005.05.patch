@@ -1,27 +1,27 @@
-From 03683b1798a995f963debe8cce1d75f534449441 Mon Sep 17 00:00:00 2001
+From 40414934e6c3326b56412b6d52b390a2fb16e629 Mon Sep 17 00:00:00 2001
 From: root <root@Debian.gzxhwq.eu.org>
-Date: Tue, 11 May 2021 13:41:48 +0800
+Date: Sat, 15 May 2021 02:34:31 +0800
 Subject: [PATCH] r8125: bump to 9.005.05
 
 ---
- package/lean/r8125/Makefile             |    2 +-
- package/lean/r8125/src/Makefile         |    7 +-
- package/lean/r8125/src/r8125.h          |   47 +-
- package/lean/r8125/src/r8125_firmware.c |  260 ++
- package/lean/r8125/src/r8125_firmware.h |   92 +
- package/lean/r8125/src/r8125_lib.c      |  688 +++++
- package/lean/r8125/src/r8125_lib.h      |  204 ++
- package/lean/r8125/src/r8125_n.c        | 3589 +++++------------------
+ package/kernel/r8125/Makefile             |    2 +-
+ package/kernel/r8125/src/Makefile         |    7 +-
+ package/kernel/r8125/src/r8125.h          |   47 +-
+ package/kernel/r8125/src/r8125_firmware.c |  260 ++
+ package/kernel/r8125/src/r8125_firmware.h |   92 +
+ package/kernel/r8125/src/r8125_lib.c      |  688 ++++
+ package/kernel/r8125/src/r8125_lib.h      |  204 ++
+ package/kernel/r8125/src/r8125_n.c        | 3589 ++++-----------------
  8 files changed, 1958 insertions(+), 2931 deletions(-)
- create mode 100644 package/lean/r8125/src/r8125_firmware.c
- create mode 100644 package/lean/r8125/src/r8125_firmware.h
- create mode 100644 package/lean/r8125/src/r8125_lib.c
- create mode 100644 package/lean/r8125/src/r8125_lib.h
+ create mode 100644 package/kernel/r8125/src/r8125_firmware.c
+ create mode 100644 package/kernel/r8125/src/r8125_firmware.h
+ create mode 100644 package/kernel/r8125/src/r8125_lib.c
+ create mode 100644 package/kernel/r8125/src/r8125_lib.h
 
-diff --git a/package/lean/r8125/Makefile b/package/lean/r8125/Makefile
+diff --git a/package/kernel/r8125/Makefile b/package/kernel/r8125/Makefile
 index add8a25df8..e1d2c46950 100644
---- a/package/lean/r8125/Makefile
-+++ b/package/lean/r8125/Makefile
+--- a/package/kernel/r8125/Makefile
++++ b/package/kernel/r8125/Makefile
 @@ -7,7 +7,7 @@ include $(TOPDIR)/rules.mk
  include $(INCLUDE_DIR)/kernel.mk
  
@@ -31,10 +31,10 @@ index add8a25df8..e1d2c46950 100644
  PKG_RELEASE:=1
  
  PKG_BUILD_DIR:=$(KERNEL_BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
-diff --git a/package/lean/r8125/src/Makefile b/package/lean/r8125/src/Makefile
+diff --git a/package/kernel/r8125/src/Makefile b/package/kernel/r8125/src/Makefile
 index 0674190954..fdcf13dd15 100644
---- a/package/lean/r8125/src/Makefile
-+++ b/package/lean/r8125/src/Makefile
+--- a/package/kernel/r8125/src/Makefile
++++ b/package/kernel/r8125/src/Makefile
 @@ -45,7 +45,8 @@ ENABLE_MULTIPLE_TX_QUEUE = n
  ENABLE_PTP_SUPPORT = n
  ENABLE_PTP_MASTER_MODE = n
@@ -56,10 +56,10 @@ index 0674190954..fdcf13dd15 100644
  else
  	BASEDIR := /lib/modules/$(shell uname -r)
  	KERNELDIR ?= $(BASEDIR)/build
-diff --git a/package/lean/r8125/src/r8125.h b/package/lean/r8125/src/r8125.h
+diff --git a/package/kernel/r8125/src/r8125.h b/package/kernel/r8125/src/r8125.h
 index 06893797b7..3b2cd85fcb 100644
---- a/package/lean/r8125/src/r8125.h
-+++ b/package/lean/r8125/src/r8125.h
+--- a/package/kernel/r8125/src/r8125.h
++++ b/package/kernel/r8125/src/r8125.h
 @@ -47,9 +47,15 @@
  #include "r8125_lib.h"
  #endif
@@ -215,11 +215,11 @@ index 06893797b7..3b2cd85fcb 100644
  static inline void rtl8125_lib_reset_prepare(struct rtl8125_private *tp) { }
  static inline void rtl8125_lib_reset_complete(struct rtl8125_private *tp) { }
  #endif
-diff --git a/package/lean/r8125/src/r8125_firmware.c b/package/lean/r8125/src/r8125_firmware.c
+diff --git a/package/kernel/r8125/src/r8125_firmware.c b/package/kernel/r8125/src/r8125_firmware.c
 new file mode 100644
 index 0000000000..b9a9db5fe2
 --- /dev/null
-+++ b/package/lean/r8125/src/r8125_firmware.c
++++ b/package/kernel/r8125/src/r8125_firmware.c
 @@ -0,0 +1,260 @@
 +// SPDX-License-Identifier: GPL-2.0-only
 +/*
@@ -481,11 +481,11 @@ index 0000000000..b9a9db5fe2
 +                rtl_fw->fw_name, rc);
 +        return rc;
 +}
-diff --git a/package/lean/r8125/src/r8125_firmware.h b/package/lean/r8125/src/r8125_firmware.h
+diff --git a/package/kernel/r8125/src/r8125_firmware.h b/package/kernel/r8125/src/r8125_firmware.h
 new file mode 100644
 index 0000000000..cd4de3e963
 --- /dev/null
-+++ b/package/lean/r8125/src/r8125_firmware.h
++++ b/package/kernel/r8125/src/r8125_firmware.h
 @@ -0,0 +1,92 @@
 +/* SPDX-License-Identifier: GPL-2.0-only */
 +/*
@@ -579,11 +579,11 @@ index 0000000000..cd4de3e963
 +*/
 +
 +#endif /* _LINUX_rtl8125_FIRMWARE_H */
-diff --git a/package/lean/r8125/src/r8125_lib.c b/package/lean/r8125/src/r8125_lib.c
+diff --git a/package/kernel/r8125/src/r8125_lib.c b/package/kernel/r8125/src/r8125_lib.c
 new file mode 100644
 index 0000000000..93284faffb
 --- /dev/null
-+++ b/package/lean/r8125/src/r8125_lib.c
++++ b/package/kernel/r8125/src/r8125_lib.c
 @@ -0,0 +1,688 @@
 +/*
 +################################################################################
@@ -1273,11 +1273,11 @@ index 0000000000..93284faffb
 +                                   RTL8125_NOTIFY_RESET_COMPLETE, NULL);
 +}
 +EXPORT_SYMBOL(rtl8125_lib_reset_complete);
-diff --git a/package/lean/r8125/src/r8125_lib.h b/package/lean/r8125/src/r8125_lib.h
+diff --git a/package/kernel/r8125/src/r8125_lib.h b/package/kernel/r8125/src/r8125_lib.h
 new file mode 100644
 index 0000000000..61fbb0128a
 --- /dev/null
-+++ b/package/lean/r8125/src/r8125_lib.h
++++ b/package/kernel/r8125/src/r8125_lib.h
 @@ -0,0 +1,204 @@
 +/*
 +################################################################################
@@ -1483,10 +1483,10 @@ index 0000000000..61fbb0128a
 +void rtl8125_lib_reset_complete(struct rtl8125_private *tp);
 +
 +#endif /* _LINUX_rtl8125_LIB_H */
-diff --git a/package/lean/r8125/src/r8125_n.c b/package/lean/r8125/src/r8125_n.c
+diff --git a/package/kernel/r8125/src/r8125_n.c b/package/kernel/r8125/src/r8125_n.c
 index 608d8c2ee5..7d843b7d7d 100644
---- a/package/lean/r8125/src/r8125_n.c
-+++ b/package/lean/r8125/src/r8125_n.c
+--- a/package/kernel/r8125/src/r8125_n.c
++++ b/package/kernel/r8125/src/r8125_n.c
 @@ -83,17 +83,33 @@
  #include "r8125.h"
  #include "rtl_eeprom.h"
