@@ -18,8 +18,9 @@ sed -i 's/192.168.1.1/10.10.10.100/g' package/base-files/files/bin/config_genera
 git apply $GITHUB_WORKSPACE/patches/*.patch
 
 #Fix qemu-ga shutdown issue
-#cp feeds/packages/utils/open-vm-tools/files/shutdown feeds/packages/utils/qemu/files/
-rm feeds/packages/utils/qemu/files/shutdown
+cd ./feeds/packages/
+git apply $GITHUB_WORKSPACE/feeds-patches/*.patch
+cd ../../
 
 # Update mwan3helper's IP pools
 wget https://ispip.clang.cn/all_cn_cidr.txt -O feeds/luci/applications/luci-app-mwan3helper/root/etc/mwan3helper/all_cn.txt

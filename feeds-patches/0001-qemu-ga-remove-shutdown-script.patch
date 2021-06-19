@@ -1,0 +1,34 @@
+From 49ac84c2fb90de16c3020d4eda70d32862da81a0 Mon Sep 17 00:00:00 2001
+From: root <root@Debian.gzxhwq.eu.org>
+Date: Sun, 20 Jun 2021 01:41:31 +0800
+Subject: [PATCH] qemu-ga: remove shutdown script
+
+---
+ utils/qemu/Makefile | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/utils/qemu/Makefile b/utils/qemu/Makefile
+index c832174..81ee97e 100644
+--- a/utils/qemu/Makefile
++++ b/utils/qemu/Makefile
+@@ -10,7 +10,7 @@ include $(TOPDIR)/rules.mk
+ 
+ PKG_NAME:=qemu
+ PKG_VERSION:=5.0.0
+-PKG_RELEASE:=4
++PKG_RELEASE:=5
+ PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.xz
+ PKG_HASH:=2f13a92a0fa5c8b69ff0796b59b86b080bbb92ebad5d301a7724dd06b5e78cb6
+ PKG_SOURCE_URL:=http://download.qemu.org/
+@@ -64,8 +64,6 @@ define Package/qemu-ga/install
+ 	$(INSTALL_BIN) ./files/qemu-ga.init $(1)/etc/init.d/qemu-ga
+ 	$(INSTALL_DIR) $(1)/etc/hotplug.d/virtio-ports
+ 	$(INSTALL_BIN) ./files/10-qemu-ga.hotplug $(1)/etc/hotplug.d/virtio-ports/10-qemu-ga
+-	$(INSTALL_DIR) $(1)/sbin
+-	$(INSTALL_BIN) ./files/shutdown $(1)/sbin/shutdown
+ endef
+ 
+ PKG_CONFIG_DEPENDS += CONFIG_PACKAGE_qemu-ga
+-- 
+2.20.1
+
