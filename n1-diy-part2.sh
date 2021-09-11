@@ -21,7 +21,8 @@ sed -i 's/192.168.1.1/192.168.0.1/g' package/base-files/files/bin/config_generat
 git apply $GITHUB_WORKSPACE/patches/*.patch
 
 # Use default banner
-sed -i '/openwrt_banner/d' package/emortal/default-settings/files/zzz-default-settings
+sed -i -e "/openwrt_banner/i\sed -i 's/lean & lienol/ImmortalWrt/g' /etc/banner" \
+-e '/openwrt_banner/d' package/emortal/default-settings/files/zzz-default-settings
 
 # Update mwan3helper's IP pools
 #wget https://ispip.clang.cn/all_cn_cidr.txt -O feeds/luci/applications/luci-app-mwan3helper/root/etc/mwan3helper/all_cn.txt
