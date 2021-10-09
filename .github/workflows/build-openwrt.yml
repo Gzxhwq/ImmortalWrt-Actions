@@ -64,7 +64,7 @@ jobs:
     - name: Cache
       uses: klever1988/cachewrtbuild@test
       with:
-        ccache: 'true'
+        ccache: 'false'
         prefix: ${{ github.workspace }}/openwrt
         mixkey: 'x86-64'
 
