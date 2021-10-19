@@ -1,16 +1,7 @@
-From 49ac84c2fb90de16c3020d4eda70d32862da81a0 Mon Sep 17 00:00:00 2001
-From: root <root@Debian.gzxhwq.eu.org>
-Date: Sun, 20 Jun 2021 01:41:31 +0800
-Subject: [PATCH] qemu-ga: remove shutdown script
-
----
- utils/qemu/Makefile | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
-
-diff --git a/utils/qemu/Makefile b/utils/qemu/Makefile
-index c832174..81ee97e 100644
---- a/utils/qemu/Makefile
-+++ b/utils/qemu/Makefile
+diff --git a/feeds/packages/utils/qemu/Makefile b/feeds/packages/utils/qemu/Makefile
+index c83217486..81ee97ee8 100644
+--- a/feeds/packages/utils/qemu/Makefile
++++ b/feeds/packages/utils/qemu/Makefile
 @@ -10,7 +10,7 @@ include $(TOPDIR)/rules.mk
  
  PKG_NAME:=qemu
@@ -29,6 +20,3 @@ index c832174..81ee97e 100644
  endef
  
  PKG_CONFIG_DEPENDS += CONFIG_PACKAGE_qemu-ga
--- 
-2.20.1
-

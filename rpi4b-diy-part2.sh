@@ -11,11 +11,11 @@
 #
 
 # Modify default IP
-#sed -i 's/192.168.1.1/192.168.50.5/g' package/base-files/files/bin/config_generate
 sed -i 's/192.168.1.1/10.10.10.200/g' package/base-files/files/bin/config_generate
 
 #Apply the patches
 git apply $GITHUB_WORKSPACE/patches/*.patch
+git apply $GITHUB_WORKSPACE/feeds-patches/*.patch
 
 # Update mwan3helper's IP pools
 wget https://ispip.clang.cn/all_cn_cidr.txt -O feeds/luci/applications/luci-app-mwan3helper/root/etc/mwan3helper/all_cn.txt

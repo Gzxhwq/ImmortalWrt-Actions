@@ -11,7 +11,6 @@
 #
 
 # Modify default IP
-#sed -i 's/192.168.1.1/192.168.50.5/g' package/base-files/files/bin/config_generate
 sed -i 's/192.168.1.1/192.168.0.1/g' package/base-files/files/bin/config_generate
 
 # Add luci-app-amlogic
@@ -19,6 +18,7 @@ sed -i 's/192.168.1.1/192.168.0.1/g' package/base-files/files/bin/config_generat
 
 #Apply the patches
 git apply $GITHUB_WORKSPACE/patches/*.patch
+git apply $GITHUB_WORKSPACE/feeds-patches/*.patch
 
 # Use default banner
 sed -i -e "/openwrt_banner/i\sed -i 's/lean & lienol/ImmortalWrt/g' /etc/banner" \
