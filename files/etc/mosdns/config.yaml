@@ -1,0 +1,130 @@
+log:
+  level: error
+  file: ""
+
+plugin:
+  ################# 服务插件 ################
+
+  # 启动服务器的插件
+  - tag: main_server
+    type: server
+    args:
+      entry:
+        - lazy_cache # 缓存
+        - _single_flight
+        - main_sequence # 分流逻辑
+      server:
+        - protocol: udp
+          addr: 127.0.0.1:5335
+        - protocol: tcp
+          addr: 127.0.0.1:5335
+
+  ################# 可执行插件 ################
+
+  # 包含分流的逻辑的插件
+  - tag: main_sequence
+    type: sequence
+    args:
+      exec:
+        - if:
+            - query_is_ad_domain
+          exec:
+            - _block_with_nxdomain
+            - _end
+        - if:
+            - query_is_local_domain
+            - '!_query_is_common'
+          exec:
+            - forward_local
+            - _end
+        - if:
+            - query_is_non_local_domain
+          exec:
+            - if:
+                - _qtype_AAAA
+              exec:
+                - _block_with_empty_response
+                - _end
+            - forward_remote
+            - _end
+        - primary:
+            - forward_local
+            - if:
+                - '!response_has_local_ip'
+              exec:
+                - _drop_response
+          secondary:
+            - if:
+                - _qtype_AAAA
+              exec:
+                - _block_with_empty_response
+                - _end
+            - forward_remote
+          fast_fallback: 150
+          always_standby: true
+
+  # 转发请求至本地服务器的插件
+  - tag: forward_local
+    type: fast_forward
+    args:
+      upstream:
+        - addr: 'tls://dot.pub'
+          dial_addr: '162.14.21.56:853'
+        - addr: 'tls://dot.pub'
+          dial_addr: '162.14.21.178:853'
+          idle_timeout: 90
+        - addr: 'tls://223.5.5.5'
+          idle_timeout: 90
+        - addr: 'tls://223.6.6.6'
+          idle_timeout: 90
+
+  # 转发请求至远程服务器的插件
+  - tag: forward_remote
+    type: fast_forward
+    args:
+      upstream:
+        - addr: 'tls://8.8.4.4'
+          idle_timeout: 90
+        - addr: 'tls://1.0.0.1'
+          idle_timeout: 90
+        - addr: 'tls://162.159.36.1'
+          idle_timeout: 90
+        - addr: 'tls://9.9.9.9'
+          idle_timeout: 90
+        - addr: 'tls://149.112.112.112'
+          idle_timeout: 90
+
+
+  ################ 匹配器插件 #################
+
+  - tag: lazy_cache
+    type: cache
+    args:
+      redis: 'redis://127.0.0.1:6379/0'
+      lazy_cache_ttl: 259200
+
+  - tag: query_is_local_domain # 匹配本地域名的插件
+    type: query_matcher
+    args:
+      domain:
+        - ext:./geosite.dat:cn
+
+  - tag: query_is_non_local_domain # 匹配非本地域名的插件
+    type: query_matcher
+    args:
+      domain:
+        - ext:./geosite.dat:geolocation-!cn
+
+  - tag: query_is_ad_domain # 匹配广告域名的插件
+    type: query_matcher
+    args:
+      domain:
+        - ext:./geosite.dat:category-ads-all
+
+  - tag: response_has_local_ip # 匹配本地 IP的插件
+    type: response_matcher
+    args:
+      ip:
+        - ext:./geoip.dat:cn
+
+include: []
