@@ -47,3 +47,6 @@ sed -i "s|ARMv8|Phicomm_N1|g" package/others/luci-app-amlogic/root/etc/config/am
 sed -i "s|opt/kernel|https://github.com/breakings/OpenWrt/tree/main/opt/kernel|g" package/others/luci-app-amlogic/root/etc/config/amlogic
 # 5.Set default filesystem in your github.com repository
 sed -i "s|ext4|btrfs|g" package/others/luci-app-amlogic/root/etc/config/amlogic
+
+# Convert zh-cn to zh_Hans
+bash <(curl -sL  https://github.com/immortalwrt/build-scripts/raw/master/convert_translation.sh)

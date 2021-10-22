@@ -28,3 +28,6 @@ wget https://ispip.clang.cn/othernet_cidr.txt -O feeds/luci/applications/luci-ap
 
 # Change dnsproxy behave
 sed -i 's/--cache --cache-min-ttl=3600/--cache --cache-min-ttl=600/g' ./feeds/luci/applications/luci-app-turboacc/root/etc/init.d/turboacc
+
+# Convert zh-cn to zh_Hans
+bash <(curl -sL  https://github.com/immortalwrt/build-scripts/raw/master/convert_translation.sh)
