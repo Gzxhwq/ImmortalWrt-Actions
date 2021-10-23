@@ -31,5 +31,5 @@ wget https://ispip.clang.cn/othernet_cidr.txt -O feeds/luci/applications/luci-ap
 sed -i 's/--cache --cache-min-ttl=3600/--cache --cache-min-ttl=600/g' ./feeds/luci/applications/luci-app-turboacc/root/etc/init.d/turboacc
 
 # Convert zh-cn to zh_Hans
-bash <(curl -sSL https://build-scripts.immortalwrt.eu.org/convert_translation.sh) -a
-bash <(curl -sSL https://build-scripts.immortalwrt.eu.org/create_acl_for_luci.sh) -a
+#bash <( curl -sSL https://build-scripts.immortalwrt.eu.org/convert_translation.sh ) -a
+#bash <( curl -sSL https://build-scripts.immortalwrt.eu.org/create_acl_for_luci.sh ) -a
