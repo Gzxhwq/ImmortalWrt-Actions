@@ -49,5 +49,5 @@ sed -i "s|opt/kernel|https://github.com/breakings/OpenWrt/tree/main/opt/kernel|g
 sed -i "s|ext4|btrfs|g" package/others/luci-app-amlogic/root/etc/config/amlogic
 
 # Convert zh-cn to zh_Hans
-bash <(curl -L https://github.com/immortalwrt/build-scripts/raw/master/convert_translation.sh) -a
-bash <(curl -L https://github.com/immortalwrt/build-scripts/raw/master/create_acl_for_luci.sh) -a
+bash <(curl -L https://raw.githubusercontent.com/immortalwrt/build-scripts/master/convert_translation.sh) -a
+bash <(curl -L https://raw.githubusercontent.com/immortalwrt/build-scripts/master/create_acl_for_luci.sh) -a
