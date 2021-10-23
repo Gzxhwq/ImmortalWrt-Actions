@@ -92,6 +92,9 @@ jobs:
       run: |
         [ -e files ] && mv files openwrt/files
         [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
+        chmod +x $DIY_P2_SH
+        cd openwrt
+        $GITHUB_WORKSPACE/$DIY_P2_SH
 
     - name: SSH connection to Actions
       uses: P3TERX/ssh2actions@v1.0.0
@@ -103,13 +106,11 @@ jobs:
     - name: Download package
       id: package
       run: |
-        chmod +x $DIY_P2_SH
         cd openwrt
         make defconfig
         make download -j8
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
-        $GITHUB_WORKSPACE/$DIY_P2_SH
 
     - name: Compile the firmware
       id: compile
