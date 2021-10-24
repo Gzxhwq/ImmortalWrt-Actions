@@ -79,7 +79,7 @@ jobs:
       run: cd openwrt && ./scripts/feeds update -a
 
     - name: Install feeds
-      run: cd openwrt && ./scripts/feeds install -af && ./scripts/feeds install -a -p mosdns
+      run: cd openwrt && ./scripts/feeds install -a -p mosdns && ./scripts/feeds install -a
 
     - name: Load custom configuration
       run: |
