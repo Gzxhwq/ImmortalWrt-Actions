@@ -51,3 +51,4 @@ sed -i "s|ext4|btrfs|g" package/others/luci-app-amlogic/root/etc/config/amlogic
 # Convert zh-cn to zh_Hans
 bash <( curl -sSL https://build-scripts.immortalwrt.eu.org/convert_translation.sh )
 bash <( curl -sSL https://build-scripts.immortalwrt.eu.org/create_acl_for_luci.sh ) -a
+rm -rf ./tmp
