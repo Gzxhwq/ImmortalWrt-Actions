@@ -1,5 +1,5 @@
 log:
-  level: error
+  level: info
   file: ""
 
 plugin:
@@ -10,14 +10,14 @@ plugin:
     type: server
     args:
       entry:
-        - lazy_cache # 缓存
-        - _single_flight
+        - redis_cache # 缓存
         - main_sequence # 分流逻辑
+        - modify_ttl  # 修改 ttl
       server:
         - protocol: udp
-          addr: 127.0.0.1:5335
+          addr: 0.0.0.0:5335
         - protocol: tcp
-          addr: 127.0.0.1:5335
+          addr: 0.0.0.0:5335
 
   ################# 可执行插件 ################
 
@@ -35,33 +35,45 @@ plugin:
             - query_is_local_domain
             - '!_query_is_common'
           exec:
+            - _pad_query
             - forward_local
             - _end
         - if:
             - query_is_non_local_domain
           exec:
-            - if:
-                - _qtype_AAAA
-              exec:
-                - _block_with_empty_response
-                - _end
+            - _prefer_ipv4
+            - _single_flight
+            - _pad_query
             - forward_remote
             - _end
         - primary:
+            - _pad_query
             - forward_local
             - if:
                 - '!response_has_local_ip'
               exec:
                 - _drop_response
           secondary:
-            - if:
-                - _qtype_AAAA
-              exec:
-                - _block_with_empty_response
-                - _end
+            - _prefer_ipv4
+            - _single_flight
+            - _pad_query
             - forward_remote
           fast_fallback: 150
           always_standby: true
+
+  # redis缓存
+  - tag: redis_cache
+    type: cache
+    args:
+      redis: 'redis://127.0.0.1:6379/0'
+      #lazy_cache_ttl: 259200
+
+  # 修改应答 ttl
+  - tag: 'modify_ttl'
+    type: 'ttl'
+    args:
+      minimal_ttl: 300 
+      maximum_ttl: 3600
 
   # 转发请求至本地服务器的插件
   - tag: forward_local
@@ -70,13 +82,14 @@ plugin:
       upstream:
         - addr: 'tls://dot.pub'
           dial_addr: '162.14.21.56:853'
+          idle_timeout: 30
         - addr: 'tls://dot.pub'
           dial_addr: '162.14.21.178:853'
-          idle_timeout: 90
+          idle_timeout: 30
         - addr: 'tls://223.5.5.5'
-          idle_timeout: 90
+          idle_timeout: 30
         - addr: 'tls://223.6.6.6'
-          idle_timeout: 90
+          idle_timeout: 30
 
   # 转发请求至远程服务器的插件
   - tag: forward_remote
@@ -84,24 +97,19 @@ plugin:
     args:
       upstream:
         - addr: 'tls://8.8.4.4'
-          idle_timeout: 90
+          idle_timeout: 30
         - addr: 'tls://1.0.0.1'
-          idle_timeout: 90
+          idle_timeout: 30
+        - addr: 'tls://101.101.101.101'
+          idle_timeout: 30
         - addr: 'tls://162.159.36.1'
-          idle_timeout: 90
+          idle_timeout: 30
         - addr: 'tls://9.9.9.9'
-          idle_timeout: 90
+          idle_timeout: 30
         - addr: 'tls://149.112.112.112'
-          idle_timeout: 90
-
+          idle_timeout: 30
 
   ################ 匹配器插件 #################
-
-  - tag: lazy_cache
-    type: cache
-    args:
-      redis: 'redis://127.0.0.1:6379/0'
-      lazy_cache_ttl: 259200
 
   - tag: query_is_local_domain # 匹配本地域名的插件
     type: query_matcher
