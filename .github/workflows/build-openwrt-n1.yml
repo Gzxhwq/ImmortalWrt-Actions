@@ -149,7 +149,7 @@ jobs:
       env:
         OPENWRT_ARMVIRT: openwrt/bin/targets/*/*/*.tar.gz
         PACKAGE_SOC: s905d
-        KERNEL_VERSION_NAME: 5.4.138_5.10.63_5.15.1
+        KERNEL_VERSION_NAME: 5.15.1_5.17.1
         KERNEL_AUTO_LATEST: true
         GZIP_IMGS: true
         WHOAMI: Gzxhwq
