@@ -15,7 +15,7 @@
 sed -i 's/192.168.1.1/10.10.10.100/g' package/base-files/files/bin/config_generate
 
 # Enable r8125 ASPM
-sed -i '/^CONFIG_ASPM.*n$/s/n$/y/' package/kernel/r8125/src/Makefile
+cp -f $GITHUB_WORKSPACE/010-config.patch package/kernel/r8125/patches/010-config.patch
 
 #Apply the patches
 git apply $GITHUB_WORKSPACE/patches/*.patch
