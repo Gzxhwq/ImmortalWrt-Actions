@@ -47,6 +47,10 @@ sed -i "s|ARMv8|Phicomm_N1|g" package/others/luci-app-amlogic/root/etc/config/am
 sed -i "s|opt/kernel|https://github.com/breakings/OpenWrt/tree/main/opt/kernel|g" package/others/luci-app-amlogic/root/etc/config/amlogic
 # 5.Set default filesystem in your github.com repository
 sed -i "s|ext4|btrfs|g" package/others/luci-app-amlogic/root/etc/config/amlogic
+# 6.Extend backup file list in openwrt-backup script
+sed -i '/\.\/root\/\.ssh\//i./etc/keepalived/ \\' package/others/luci-app-amlogic/root/usr/sbin/openwrt-backup
+sed -i '/\.\/root\/\.ssh\//i./etc/conntrackd/ \\' package/others/luci-app-amlogic/root/usr/sbin/openwrt-backup
+sed -i '/\.\/root\/\.ssh\//i./etc/bird.conf \\' package/others/luci-app-amlogic/root/usr/sbin/openwrt-backup
 
 # Convert zh-cn to zh_Hans
 bash <( curl -sSL https://build-scripts.immortalwrt.eu.org/convert_translation.sh )
