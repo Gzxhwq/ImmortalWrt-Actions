@@ -155,6 +155,8 @@ jobs:
         WHOAMI: Gzxhwq
         amlogic_size: 1024
         OPENWRT_VER: 21.02-SNAPSHOT
+        SCRIPT_REPO_URL: Gzxhwq/openwrt_packit
+        SCRIPT_REPO_BRANCH: master
 
     - name: Upload firmware directory
       uses: actions/upload-artifact@main
