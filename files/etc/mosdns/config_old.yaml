@@ -1,0 +1,136 @@
+log:
+  level: error
+  file: ''
+
+plugin:
+  ################# 服务插件 ################
+
+  # 启动服务器的插件
+  - tag: main_server
+    type: server
+    args:
+      entry:
+        - main_sequence # 分流逻辑
+        - modify_ttl  # 修改 ttl
+      server:
+        - protocol: udp
+          addr: 0.0.0.0:5335
+        - protocol: tcp
+          addr: 0.0.0.0:5335
+
+  ################# 可执行插件 ################
+
+  # 包含分流的逻辑的插件
+  - tag: main_sequence
+    type: sequence
+    args:
+      exec:
+        - if:
+            - query_is_ad_domain
+            - qtype65
+          exec:
+            - _block_with_nxdomain
+            - _return
+
+        - redis_cache # 运行缓存插件。放在这里就可以避免缓存到无用的广告域名。
+
+        - if:
+            - query_is_local_domain
+            - '!_query_is_common'
+          exec:
+            - _pad_query
+            - forward_local
+            - _return
+
+        - if:
+            - query_is_non_local_domain
+          exec:
+            - _prefer_ipv4
+            - _pad_query
+            - forward_remote
+            - _return
+
+        - primary:
+            - _pad_query
+            - forward_local
+            - if:
+                - '!response_has_local_ip'
+              exec:
+                - _drop_response
+          secondary:
+            - _prefer_ipv4
+            - _pad_query
+            - forward_remote
+          fast_fallback: 150
+          always_standby: true
+
+  # redis缓存
+  - tag: redis_cache
+    type: cache
+    args:
+      redis: 'redis://127.0.0.1:6379/0'
+      #lazy_cache_ttl: 259200
+
+  # 修改应答 ttl
+  - tag: 'modify_ttl'
+    type: 'ttl'
+    args:
+      minimal_ttl: 300 
+      maximum_ttl: 3600
+
+  # 转发请求至本地服务器的插件
+  - tag: forward_local
+    type: fast_forward
+    args:
+      upstream:
+        - addr: 'tls://1.12.12.12'
+        - addr: 'tls://120.53.53.53'
+        - addr: 'tls://223.5.5.5'
+        - addr: 'tls://223.6.6.6'
+
+  # 转发请求至远程服务器的插件
+  - tag: forward_remote
+    type: fast_forward
+    args:
+      upstream:
+        - addr: 'tls://8.8.4.4'
+        - addr: 'tls://1.0.0.1'
+        - addr: 'tls://101.101.101.101'
+        - addr: 'tls://162.159.36.1'
+        - addr: 'tls://9.9.9.9'
+        - addr: 'tls://149.112.112.112'
+
+  ################ 匹配器插件 #################
+
+  - tag: query_is_local_domain # 匹配本地域名的插件
+    type: query_matcher
+    args:
+      domain:
+        - ext:/usr/share/v2ray/geosite.dat:cn
+
+  - tag: query_is_non_local_domain # 匹配非本地域名的插件
+    type: query_matcher
+    args:
+      domain:
+        - ext:/usr/share/v2ray/geosite.dat:geolocation-!cn
+
+  - tag: query_is_ad_domain # 匹配广告域名的插件
+    type: query_matcher
+    args:
+      domain:
+        - ext:/usr/share/v2ray/geosite.dat:category-ads-all
+        - 'yunduan.cn'
+        - 'web605.cn'
+
+  - tag: response_has_local_ip # 匹配本地 IP的插件
+    type: response_matcher
+    args:
+      ip:
+        - ext:/usr/share/v2ray/geoip.dat:cn
+
+  - tag: qtype65
+    type: query_matcher
+    args:
+      qtype: [65]
+
+include: []
