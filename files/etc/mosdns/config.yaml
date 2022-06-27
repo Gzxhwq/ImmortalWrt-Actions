@@ -83,6 +83,7 @@ plugins:
     type: sequence
     args:
       exec:
+        - _misc_optm
         # 缓存
         - redis_cache
 
@@ -95,12 +96,14 @@ plugins:
         # 已知的本地域名用本地服务器解析
         - if: query_is_local_domain
           exec:
+            - _pad_query
             - forward_local
             - _return
 
         # 已知的非本地域名用远程服务器解析
         - if: query_is_non_local_domain
           exec:
+            - _pad_query
             - forward_remote
             - _return
 
@@ -109,6 +112,7 @@ plugins:
           # 的工作流程。
           # primary 从本地服务器获取应答，丢弃非本地 IP 的结果。
         - primary:
+            - _pad_query
             - forward_local
             - if: "(! response_has_local_ip) && [_response_valid_answer]"
               exec:
@@ -116,6 +120,7 @@ plugins:
           # secondary 从远程服务器获取应答。
           secondary:
             - _prefer_ipv4
+            - _pad_query
             - forward_remote
           # 这里建议设置成 local 服务器正常延时的 2~5 倍。
           # 这个延时保证了 local 延时偶尔变高时，其结果不会被 remote 抢答。
