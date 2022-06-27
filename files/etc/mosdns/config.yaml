@@ -70,6 +70,12 @@ plugins:
       ip:
         - "provider:geoip:cn"
 
+  # 匹配 record type 65 的插件
+  - tag: "query_is_qtype65"
+    type: query_matcher
+    args:
+      qtype: [65]
+
   # 主要的运行逻辑插件
   # sequence 插件中调用的插件 tag 必须在 sequence 前定义，
   # 否则 sequence 找不到对应插件。
@@ -81,7 +87,7 @@ plugins:
         - redis_cache
 
         # 屏蔽广告域名
-        - if: query_is_ad_domain
+        - if: "query_is_ad_domain || query_is_qtype65"
           exec:
             - _new_nxdomain_response
             - _return
