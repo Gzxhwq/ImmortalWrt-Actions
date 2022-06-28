@@ -15,18 +15,21 @@ plugins:
   - tag: redis_cache
     type: cache
     args:
+      size: 65536
       redis: "redis://127.0.0.1:6379/0"
-      #lazy_cache_ttl: 259200
+      lazy_cache_ttl: 259200
 
   # 转发至本地服务器的插件
   - tag: forward_local
     type: fast_forward
     args:
       upstream:
-        - addr: 'tls://1.12.12.12'
-        - addr: 'tls://120.53.53.53'
-        - addr: 'tls://223.5.5.5'
-        - addr: 'tls://223.6.6.6'
+        - addr: 'https://1.12.12.12/dns-query'
+          enable_pipeline: true
+        - addr: 'https://120.53.53.53/dns-query'
+          enable_pipeline: true
+        - addr: 'https://223.5.5.5/dns-query'
+        - addr: 'https://223.6.6.6/dns-query'
 
   # 转发至远程服务器的插件
   - tag: forward_remote
@@ -34,11 +37,17 @@ plugins:
     args:
       upstream:
         - addr: 'tls://8.8.4.4'
-        - addr: 'tls://1.0.0.1'
-        - addr: 'tls://101.101.101.101'
-        - addr: 'tls://162.159.36.1'
-        - addr: 'tls://9.9.9.9'
-        - addr: 'tls://149.112.112.112'
+          enable_pipeline: true
+        - addr: 'https://1.0.0.1/dns-query'
+          enable_pipeline: true
+        - addr: 'https://162.159.36.1/dns-query'
+          enable_pipeline: true
+        - addr: 'https://162.159.46.1/dns-query'
+          enable_pipeline: true
+        - addr: 'https://9.9.9.9/dns-query'
+          enable_pipeline: true
+        - addr: 'https://149.112.112.112/dns-query'
+          enable_pipeline: true
 
   # 匹配本地域名的插件
   - tag: query_is_local_domain
@@ -127,6 +136,7 @@ plugins:
           # 如果 local 超过这个延时还没响应，可以假设 local 出现了问题。
           # 这时用就采用 remote 的应答。单位: 毫秒。
           fast_fallback: 200
+          always_standby: true
 
 servers:
   - exec: main_sequence
