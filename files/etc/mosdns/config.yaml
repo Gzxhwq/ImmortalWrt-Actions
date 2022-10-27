@@ -14,11 +14,19 @@ data_providers:
     auto_reload: true
 
 plugins:
+  # 反向缓存
+  - tag: redis_reverse
+    type: reverse_lookup
+    args:
+      size: 65535
+      redis: "redis://127.0.0.1:6379/0"
+      handle_ptr: true 
+
   # 缓存
   - tag: redis_cache
     type: cache
     args:
-      size: 65536
+      size: 65535
       redis: "redis://127.0.0.1:6379/0"
       lazy_cache_ttl: 259200
 
@@ -96,6 +104,7 @@ plugins:
     args:
       exec:
         - _misc_optm
+        - redis_reverse
         # 缓存
         - redis_cache
 
