@@ -1,9 +1,9 @@
 diff --git a/include/version.mk b/include/version.mk
-index 371f37816e..a4b47c8a57 100644
+index 187a7322ec..200babd0cb 100644
 --- a/include/version.mk
 +++ b/include/version.mk
 @@ -32,7 +32,7 @@ VERSION_REPO:=$(call qstrip,$(CONFIG_VERSION_REPO))
- VERSION_REPO:=$(if $(VERSION_REPO),$(VERSION_REPO),https://downloads.openwrt.org/releases/21.02-SNAPSHOT)
+ VERSION_REPO:=$(if $(VERSION_REPO),$(VERSION_REPO),https://downloads.immortalwrt.org/releases/21.02-SNAPSHOT)
  
  VERSION_DIST:=$(call qstrip,$(CONFIG_VERSION_DIST))
 -VERSION_DIST:=$(if $(VERSION_DIST),$(VERSION_DIST),ImmortalWrt)
@@ -25,7 +25,7 @@ index cf55d3c0cb..e96fe29de6 100755
  		set system.@system[-1].ttylogin='0'
  		set system.@system[-1].log_size='64'
 diff --git a/package/base-files/image-config.in b/package/base-files/image-config.in
-index d58cc8ae70..1f06332b00 100644
+index 9e1e3ca805..573c35ae16 100644
 --- a/package/base-files/image-config.in
 +++ b/package/base-files/image-config.in
 @@ -158,10 +158,10 @@ if VERSIONOPT
@@ -41,11 +41,11 @@ index d58cc8ae70..1f06332b00 100644
  
  	config VERSION_NUMBER
  		string
-diff --git a/package/emortal/default-settings/files/zzz-default-settings b/package/emortal/default-settings/files/zzz-default-settings
-index 22fc89bf38..15c98749c7 100755
---- a/package/emortal/default-settings/files/zzz-default-settings
-+++ b/package/emortal/default-settings/files/zzz-default-settings
-@@ -28,6 +28,6 @@ echo "log-facility=/dev/null" >> /etc/dnsmasq.conf
+diff --git a/package/emortal/default-settings/files/99-default-settings b/package/emortal/default-settings/files/99-default-settings
+index e722a5f073..39079722be 100755
+--- a/package/emortal/default-settings/files/99-default-settings
++++ b/package/emortal/default-settings/files/99-default-settings
+@@ -25,6 +25,6 @@ echo "log-facility=/dev/null" >> /etc/dnsmasq.conf
  rm -rf /tmp/luci-modulecache/
  rm -f /tmp/luci-indexcache
  
