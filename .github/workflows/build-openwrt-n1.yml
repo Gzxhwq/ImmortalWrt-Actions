@@ -157,6 +157,7 @@ jobs:
         OPENWRT_VER: 21.02-SNAPSHOT
         SCRIPT_REPO_URL: Gzxhwq/openwrt_packit
         SCRIPT_REPO_BRANCH: master
+        GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
     - name: Upload firmware directory
       uses: actions/upload-artifact@main
@@ -191,7 +192,7 @@ jobs:
 
     - name: Upload OpenWrt Firmware to Release
       id: release
-      uses: ncipollo/release-action@v1
+      uses: ncipollo/release-action@main
       if: env.PACKAGED_STATUS == 'success' && env.UPLOAD_RELEASE == 'true' && !cancelled()
       with:
         name: R${{ env.DATE }} for ${{ env.FILE_NAME }}
@@ -199,7 +200,7 @@ jobs:
         removeArtifacts: true
         tag: ${{ env.FILE_NAME }}
         commit: main
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ secrets.GH_TOKEN }}
         artifacts: ${{ env.PACKAGED_OUTPUTPATH }}/*
         body: |
           默认IP：192.168.0.1 默认密码：password
