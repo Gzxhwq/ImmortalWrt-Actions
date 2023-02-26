@@ -69,7 +69,7 @@ jobs:
         echo "DATE1=$(date "+%Y-%m-%d")" >> $GITHUB_ENV
 
     - name: Cache
-      uses: klever1988/cachewrtbuild@test
+      uses: klever1988/cachewrtbuild@main
       with:
         ccache: 'true'
         prefix: ${{ github.workspace }}/openwrt
@@ -215,7 +215,7 @@ jobs:
         keep_minimum_runs: 10
 
     - name: Remove old Releases
-      uses: dev-drprasad/delete-older-releases@v0.2.0
+      uses: dev-drprasad/delete-older-releases@master
       if: env.UPLOAD_RELEASE == 'true' && !cancelled()
       with:
         keep_latest: 3
