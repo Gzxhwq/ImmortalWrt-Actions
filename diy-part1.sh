@@ -25,5 +25,5 @@ sed -i '/iptables-mod-socket/d' ./package/others/sing-box/Makefile
 #svn co https://github.com/Gzxhwq/openwrt-passwall/branches/xray-core-git/xray-core package/others/xray-core
 
 #svn co https://github.com/xiaorouji/openwrt-passwall/branches/luci-reality/luci-app-passwall package/others/luci-app-passwall
-svn co https://github.com/Gzxhwq/openwrt-passwall/branches/luci-me/luci-app-passwall package/others/luci-app-passwall
+svn co https://github.com/Gzxhwq/openwrt-passwall/branches/luci-test/luci-app-passwall package/others/luci-app-passwall
 svn co https://github.com/xiaorouji/openwrt-passwall2/trunk/luci-app-passwall2 package/others/luci-app-passwall2
