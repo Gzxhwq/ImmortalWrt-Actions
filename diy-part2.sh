@@ -37,3 +37,8 @@ sed -i 's/--cache --cache-min-ttl=3600/--cache --cache-min-ttl=600/g' ./feeds/lu
 #bash <( curl -sSL https://build-scripts.immortalwrt.eu.org/convert_translation.sh )
 #bash <( curl -sSL https://build-scripts.immortalwrt.eu.org/create_acl_for_luci.sh ) -a
 #rm -rf ./tmp
+
+# Update Golang
+git clone -b master --single-branch https://github.com/immortalwrt/packages.git packages_master
+rm -rf ./feeds/packages/lang/golang
+mv ./packages_master/lang/golang ./feeds/packages/lang
