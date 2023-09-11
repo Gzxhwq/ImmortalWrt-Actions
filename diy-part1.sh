@@ -23,8 +23,8 @@ svn co https://github.com/QiuSimons/openwrt-mos/trunk/v2ray-geodata package/othe
 svn co https://github.com/Gzxhwq/openwrt-passwall/branches/sing-box-git/sing-box package/others/sing-box
 sed -i '/iptables-mod-socket/d' ./package/others/sing-box/Makefile
 svn co https://github.com/Gzxhwq/openwrt-passwall/branches/xray-core-git/xray-core package/others/xray-core
-svn co https://github.com/xiaorouji/openwrt-passwall/trunk/tuic-client package/others/tuic-client
+svn co https://github.com/xiaorouji/openwrt-passwall-packages/trunk/tuic-client package/others/tuic-client
 
-svn co https://github.com/xiaorouji/openwrt-passwall/branches/luci/luci-app-passwall package/others/luci-app-passwall
+svn co https://github.com/xiaorouji/openwrt-passwall/trunk/luci-app-passwall package/others/luci-app-passwall
 # svn co https://github.com/Gzxhwq/openwrt-passwall/branches/luci-test/luci-app-passwall package/others/luci-app-passwall
 svn co https://github.com/xiaorouji/openwrt-passwall2/trunk/luci-app-passwall2 package/others/luci-app-passwall2
