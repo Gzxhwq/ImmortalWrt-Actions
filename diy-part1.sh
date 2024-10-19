@@ -23,8 +23,8 @@ sed -i '$a src-git passwall_packages https://github.com/xiaorouji/openwrt-passwa
 # svn co https://github.com/QiuSimons/openwrt-mos/trunk/v2ray-geodata package/others/v2ray-geodata
 
 # svn co https://github.com/Gzxhwq/openwrt-passwall-packages/branches/sing-box-git/sing-box package/others/sing-box
-git submodule add https://github.com/Gzxhwq/openwrt-packages.git package/others/my_packages
-sed -i '/iptables-mod-socket/d' ./package/others/my_packages/sing-box/Makefile
+# git submodule add https://github.com/Gzxhwq/openwrt-packages.git package/others/my_packages
+sed -i '/iptables-mod-socket/d' ./package/feeds/my_packages/sing-box/Makefile
 # svn co https://github.com/Gzxhwq/openwrt-passwall-packages/branches/xray-core-git/xray-core package/others/xray-core
 # svn co https://github.com/xiaorouji/openwrt-passwall-packages/trunk/tuic-client package/others/tuic-client
 
