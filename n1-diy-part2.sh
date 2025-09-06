@@ -17,7 +17,7 @@ sed -i 's/192.168.1.1/192.168.0.1/g' package/base-files/files/bin/config_generat
 #svn co https://github.com/ophub/luci-app-amlogic/trunk/luci-app-amlogic package/luci-app-amlogic
 
 #Apply the patches
-git apply $GITHUB_WORKSPACE/patches/*.patch
+# git apply $GITHUB_WORKSPACE/patches/*.patch
 
 # Use default banner
 #sed -i -e "/openwrt_banner/i\sed -i 's/lean & lienol/ImmortalWrt/g' /etc/banner" \
@@ -34,7 +34,7 @@ git apply $GITHUB_WORKSPACE/patches/*.patch
 #wget https://raw.githubusercontent.com/gaoyifan/china-operator-ip/ip-lists/cstnet.txt -O feeds/luci/applications/luci-app-mwan3helper/root/etc/mwan3helper/othernet.txt
 
 # Change dnsproxy behave
-sed -i 's/--cache --cache-min-ttl=3600/--cache --cache-min-ttl=600/g' ./feeds/luci/applications/luci-app-turboacc/root/etc/init.d/turboacc
+# sed -i 's/--cache --cache-min-ttl=3600/--cache --cache-min-ttl=600/g' ./feeds/luci/applications/luci-app-turboacc/root/etc/init.d/turboacc
 
 
 # 1.Set the download repository of the OpenWrt files to your github.com
@@ -44,15 +44,24 @@ sed -i "s|ARMv8|Phicomm_N1|g" package/others/luci-app-amlogic/root/etc/config/am
 # 3.Set the suffix of the OPENWRT files in your github.com Releases
 #sed -i "s|.img.gz|.OPENWRT_SUFFIX|g" package/others/luci-app-amlogic/root/etc/config/amlogic
 # 4.Set the download path of the kernel in your github.com repository
-sed -i "s|opt/kernel|https://github.com/breakings/OpenWrt/tree/main/opt/kernel|g" package/others/luci-app-amlogic/root/etc/config/amlogic
+sed -i "s|opt/kernel|https://github.com/breakings/OpenWrt|g" package/others/luci-app-amlogic/root/etc/config/amlogic
 # 5.Set default filesystem in your github.com repository
 sed -i "s|ext4|btrfs|g" package/others/luci-app-amlogic/root/etc/config/amlogic
 # 6.Extend backup file list in openwrt-backup script
 sed -i '/\.\/root\/\.ssh\//i./etc/keepalived/ \\' package/others/luci-app-amlogic/root/usr/sbin/openwrt-backup
 sed -i '/\.\/root\/\.ssh\//i./etc/conntrackd/ \\' package/others/luci-app-amlogic/root/usr/sbin/openwrt-backup
 sed -i '/\.\/root\/\.ssh\//i./etc/bird.conf \\' package/others/luci-app-amlogic/root/usr/sbin/openwrt-backup
+sed -i '/\.\/root\/\.ssh\//i./etc/sing-box/config.json \\' package/others/luci-app-amlogic/root/usr/sbin/openwrt-backup
+sed -i '/\.\/root\/\.ssh\//i./etc/ddns-go/ \\' package/others/luci-app-amlogic/root/usr/sbin/openwrt-backup
+sed -i '/\.\/root\/\.ssh\//i./etc/etc/frp/ \\' package/others/luci-app-amlogic/root/usr/sbin/openwrt-backup
+
 
 # Convert zh-cn to zh_Hans
-bash <( curl -sSL https://build-scripts.immortalwrt.eu.org/convert_translation.sh )
-bash <( curl -sSL https://build-scripts.immortalwrt.eu.org/create_acl_for_luci.sh ) -a
-rm -rf ./tmp
+# bash <( curl -sSL https://build-scripts.immortalwrt.eu.org/convert_translation.sh )
+# bash <( curl -sSL https://build-scripts.immortalwrt.eu.org/create_acl_for_luci.sh ) -a
+# rm -rf ./tmp
+
+# Update Golang
+git clone -b master --single-branch https://github.com/immortalwrt/packages.git packages_master
+rm -rf ./feeds/packages/lang/golang
+mv ./packages_master/lang/golang ./feeds/packages/lang
