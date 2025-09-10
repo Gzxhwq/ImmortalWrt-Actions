@@ -8,7 +8,7 @@
 # Description: Build OpenWrt using GitHub Actions
 #
 
-name: Build OpenWrt x86_64
+name: Build OpenWrt CUDY-TR3000-256mb-v1
 
 on:
   repository_dispatch:
@@ -20,17 +20,17 @@ on:
         default: 'false'
 
 env:
-  REPO_URL: https://github.com/immortalwrt/immortalwrt
-  REPO_BRANCH: openwrt-24.10
+  REPO_URL: https://github.com/padavanonly/immortalwrt-mt798x-6.6
+  REPO_BRANCH: openwrt-24.10-6.6
   FEEDS_CONF: feeds.conf.default
-  CONFIG_FILE: x86_64.config
+  CONFIG_FILE: tr3000_256mb.config
   DIY_P1_SH: diy-part1.sh
-  DIY_P2_SH: diy-part2.sh
+  DIY_P2_SH: tr3000-256mb-diy-part2
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: true
   UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
-  FILE_NAME: x86_64
+  FILE_NAME: tr3000-256mb
 
 jobs:
   build:
@@ -118,7 +118,7 @@ jobs:
         with:
           ccache: 'true'
           prefix: ${{ github.workspace }}/openwrt
-          mixkey: 'x86-64'
+          mixkey: 'tr3000-256mb'
 
       - name: Load custom feeds
         run: |
@@ -204,8 +204,8 @@ jobs:
           commit: main
           artifacts: ${{ env.FIRMWARE }}/*
           body: |
-            - 默认IP：10.10.10.100 默认密码：无
-            - 当前使用版本:【编译前的最后一次[➦主源码](https://github.com/immortalwrt/immortalwrt/tree/openwrt-24.10)更新记录】
+            - 默认IP：192.168.6.1 默认密码：无
+            - 当前使用版本:【编译前的最后一次[➦主源码](https://github.com/padavanonly/immortalwrt-mt798x-6.6)更新记录】
             ${{ env.useVersionInfo }}
 
       - name: Delete workflow runs
