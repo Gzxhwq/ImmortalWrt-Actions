@@ -38,22 +38,22 @@ sed -i 's/192.168.1.1/192.168.0.1/g' package/base-files/files/bin/config_generat
 
 
 # 1.Set the download repository of the OpenWrt files to your github.com
-sed -i "s|https.*/OpenWrt|https://github.com/Gzxhwq/ImmortalWrt-Actions|g" package/others/luci-app-amlogic/root/etc/config/amlogic
+sed -i "s|https.*/OpenWrt|https://github.com/Gzxhwq/ImmortalWrt-Actions|g" package/others/luci-app-amlogic/luci-app-amlogic/root/etc/config/amlogic
 # 2.Set the keywords of Tags in your github.com Releases
-sed -i "s|ARMv8|Phicomm_N1|g" package/others/luci-app-amlogic/root/etc/config/amlogic
+sed -i "s|ARMv8|Phicomm_N1|g" package/others/luci-app-amlogic/luci-app-amlogic/root/etc/config/amlogic
 # 3.Set the suffix of the OPENWRT files in your github.com Releases
-#sed -i "s|.img.gz|.OPENWRT_SUFFIX|g" package/others/luci-app-amlogic/root/etc/config/amlogic
+#sed -i "s|.img.gz|.OPENWRT_SUFFIX|g" package/others/luci-app-amlogic/luci-app-amlogic/root/etc/config/amlogic
 # 4.Set the download path of the kernel in your github.com repository
-sed -i "s|opt/kernel|https://github.com/breakings/OpenWrt|g" package/others/luci-app-amlogic/root/etc/config/amlogic
+sed -i "s|opt/kernel|https://github.com/breakings/OpenWrt|g" package/others/luci-app-amlogic/luci-app-amlogic/root/etc/config/amlogic
 # 5.Set default filesystem in your github.com repository
-sed -i "s|ext4|btrfs|g" package/others/luci-app-amlogic/root/etc/config/amlogic
+sed -i "s|ext4|btrfs|g" package/others/luci-app-amlogic/luci-app-amlogic/root/etc/config/amlogic
 # 6.Extend backup file list in openwrt-backup script
-sed -i '/\.\/root\/\.ssh\//i./etc/keepalived/ \\' package/others/luci-app-amlogic/root/usr/sbin/openwrt-backup
-sed -i '/\.\/root\/\.ssh\//i./etc/conntrackd/ \\' package/others/luci-app-amlogic/root/usr/sbin/openwrt-backup
-sed -i '/\.\/root\/\.ssh\//i./etc/bird.conf \\' package/others/luci-app-amlogic/root/usr/sbin/openwrt-backup
-sed -i '/\.\/root\/\.ssh\//i./etc/sing-box/config.json \\' package/others/luci-app-amlogic/root/usr/sbin/openwrt-backup
-sed -i '/\.\/root\/\.ssh\//i./etc/ddns-go/ \\' package/others/luci-app-amlogic/root/usr/sbin/openwrt-backup
-sed -i '/\.\/root\/\.ssh\//i./etc/etc/frp/ \\' package/others/luci-app-amlogic/root/usr/sbin/openwrt-backup
+sed -i '/\.\/root\/\.ssh\//i./etc/keepalived/ \\' package/others/luci-app-amlogic/luci-app-amlogic/root/usr/sbin/openwrt-backup
+sed -i '/\.\/root\/\.ssh\//i./etc/conntrackd/ \\' package/others/luci-app-amlogic/luci-app-amlogic/root/usr/sbin/openwrt-backup
+sed -i '/\.\/root\/\.ssh\//i./etc/bird.conf \\' package/others/luci-app-amlogic/luci-app-amlogic/root/usr/sbin/openwrt-backup
+sed -i '/\.\/root\/\.ssh\//i./etc/sing-box/config.json \\' package/others/luci-app-amlogic/luci-app-amlogic/root/usr/sbin/openwrt-backup
+sed -i '/\.\/root\/\.ssh\//i./etc/ddns-go/ \\' package/others/luci-app-amlogic/luci-app-amlogic/root/usr/sbin/openwrt-backup
+sed -i '/\.\/root\/\.ssh\//i./etc/etc/frp/ \\' package/others/luci-app-amlogic/luci-app-amlogic/root/usr/sbin/openwrt-backup
 
 
 # Convert zh-cn to zh_Hans
