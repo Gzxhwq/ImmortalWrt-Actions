@@ -8,7 +8,7 @@
 # Description: Build OpenWrt using GitHub Actions
 #
 
-name: Build OpenWrt N1
+name: Build ImmortalWrt x86_64
 
 on:
   repository_dispatch:
@@ -23,14 +23,14 @@ env:
   REPO_URL: https://github.com/immortalwrt/immortalwrt
   REPO_BRANCH: openwrt-24.10
   FEEDS_CONF: feeds.conf.default
-  CONFIG_FILE: n1.config
+  CONFIG_FILE: x86_64.config
   DIY_P1_SH: diy-part1.sh
-  DIY_P2_SH: n1-diy-part2.sh
+  DIY_P2_SH: diy-part2.sh
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: true
   UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
-  FILE_NAME: Phicomm_N1
+  FILE_NAME: x86_64
 
 jobs:
   build:
@@ -68,16 +68,16 @@ jobs:
           npm_clean: "True"
           os_swap: "True"
 
-      # - name: Freeing up disk space
-      #   uses: easimon/maximize-build-space@master
-      #   with: 
-      #     root-reserve-mb: 2048
-      #     swap-size-mb: 1
-      #     remove-dotnet: 'true'
-      #     remove-android: 'true'
-      #     remove-haskell: 'true'
-      #     remove-codeql: 'true'
-      #     remove-docker-images: 'true'
+      - name: Freeing up disk space
+        uses: easimon/maximize-build-space@master
+        with: 
+          root-reserve-mb: 2048
+          swap-size-mb: 1
+          remove-dotnet: 'true'
+          remove-android: 'true'
+          remove-haskell: 'true'
+          remove-codeql: 'true'
+          remove-docker-images: 'true'
 
       - name: Free up disk space complete
         run: |
@@ -118,7 +118,7 @@ jobs:
         with:
           ccache: 'true'
           prefix: ${{ github.workspace }}/openwrt
-          mixkey: 'armvirt-64'
+          mixkey: 'x86-64'
 
       - name: Load custom feeds
         run: |
@@ -131,7 +131,7 @@ jobs:
         run: cd openwrt && ./scripts/feeds update -a
 
       - name: Install feeds
-        run: cd openwrt && ./scripts/feeds install -a -p my_packages -f && ./scripts/feeds install -a
+        run: cd openwrt && ./scripts/feeds install -a -f -p my_packages && ./scripts/feeds install -a -p passwall_packages && ./scripts/feeds install -a
 
       - name: Load custom configuration
         run: |
@@ -185,22 +185,6 @@ jobs:
           echo "FIRMWARE=$PWD" >> $GITHUB_ENV
           echo "status=success" >> $GITHUB_OUTPUT
 
-      - name: Package Armvirt as OpenWrt
-        uses: Gzxhwq/openwrt_packit@master
-        if: steps.organize.outputs.status == 'success' && !cancelled()
-        env:
-          OPENWRT_ARMSR: openwrt/bin/targets/*/*/*.tar.gz
-          PACKAGE_SOC: s905d
-          KERNEL_VERSION_NAME: 6.6.y_6.12.y
-          KERNEL_AUTO_LATEST: true
-          GZIP_IMGS: true
-          WHOAMI: Gzxhwq
-          amlogic_size: 1024
-          OPENWRT_IP: 192.168.0.1
-          OPENWRT_VER: 24.10-SNAPSHOT
-          SCRIPT_REPO_URL: Gzxhwq/openwrt_packit
-          SCRIPT_REPO_BRANCH: master
-
       - name: Upload firmware directory
         uses: actions/upload-artifact@v6
         if: steps.organize.outputs.status == 'success' && !cancelled()
@@ -208,15 +192,9 @@ jobs:
           name: OpenWrt_firmware${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
           path: ${{ env.FIRMWARE }}
 
-      # - name: Upload artifact to Actions
-      #   uses: kittaakos/upload-artifact-as-is@v0
-      #   if: env.PACKAGED_STATUS == 'success' && env.UPLOAD_FIRMWARE == 'true' && !cancelled()
-      #   with:
-      #     path: ${{ env.PACKAGED_OUTPUTPATH }}/
-
       - name: Upload OpenWrt Firmware to Release
         id: release
-        if: env.PACKAGED_STATUS == 'success' && env.UPLOAD_RELEASE == 'true' && !cancelled()
+        if: steps.compile.outputs.status == 'success' && env.UPLOAD_RELEASE == 'true' && !cancelled()
         uses: ncipollo/release-action@v1
         with:
           name: R${{ env.DATE }} for ${{ env.FILE_NAME }}
@@ -224,11 +202,10 @@ jobs:
           removeArtifacts: true
           tag: ${{ env.FILE_NAME }}
           commit: main
-          artifacts: ${{ env.PACKAGED_OUTPUTPATH }}/*
+          artifacts: ${{ env.FIRMWARE }}/*
           body: |
-            默认IP：192.168.0.1 默认密码：password
-            当前使用版本:【编译前的最后一次➦[主源码](https://github.com/immortalwrt/immortalwrt/tree/openwrt-24.10)更新记录】
-            因变动较大，从60或以下版本升级到61或更高版本建议全新刷入或者不保留配置进行升级。
+            - 默认IP：10.10.10.100 默认密码：无
+            - 当前使用版本:【编译前的最后一次[➦主源码](https://github.com/immortalwrt/immortalwrt/tree/openwrt-24.10)更新记录】
             ${{ env.useVersionInfo }}
 
       - name: Delete workflow runs
@@ -241,7 +218,7 @@ jobs:
         uses: dev-drprasad/delete-older-releases@v0.3.4
         if: env.UPLOAD_RELEASE == 'true' && !cancelled()
         with:
-          keep_latest: 15
+          keep_latest: 3
           delete_tags: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
