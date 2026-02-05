@@ -130,9 +130,6 @@ jobs:
       - name: Update feeds
         run: cd openwrt && ./scripts/feeds update -a
 
-      - name: Install feeds
-        run: cd openwrt && ./scripts/feeds install -a -f -p my_packages && ./scripts/feeds install -a -p passwall_packages && ./scripts/feeds install -a
-
       - name: Load custom configuration
         run: |
           [ -e files ] && mv files openwrt/files
@@ -140,6 +137,9 @@ jobs:
           chmod +x $DIY_P2_SH
           cd openwrt
           $GITHUB_WORKSPACE/$DIY_P2_SH
+
+      - name: Install feeds
+        run: cd openwrt && ./scripts/feeds install -a -f -p my_packages && ./scripts/feeds install -a -p passwall_packages && ./scripts/feeds install -a
 
       - name: SSH connection to Actions
         uses: mxschmitt/action-tmate@v3

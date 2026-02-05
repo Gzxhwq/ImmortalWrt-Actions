@@ -15,7 +15,7 @@
 
 # Add a feed source
 #sed -i '$a src-git mosdns https://github.com/Gzxhwq/openwrt-mos;dev' feeds.conf.default
-sed -i '$a src-git my_packages https://github.com/Gzxhwq/openwrt-packages' feeds.conf.default
+sed -i '1i src-git my_packages https://github.com/Gzxhwq/openwrt-packages' feeds.conf.default
 # sed -i '$a src-git passwall_packages https://github.com/xiaorouji/openwrt-passwall-packages' feeds.conf.default
 
 #Add external packages
