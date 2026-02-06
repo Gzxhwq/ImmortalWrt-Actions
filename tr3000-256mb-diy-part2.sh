@@ -39,6 +39,7 @@ sed -i 's/192.168.1.1/10.10.10.100/g' package/base-files/files/bin/config_genera
 #rm -rf ./tmp
 
 # Update Golang
-# git clone -b openwrt-25.12 --single-branch https://github.com/immortalwrt/packages.git packages_2512
-# rm -rf ./feeds/packages/lang/golang
-# mv ./packages_2512/lang/golang ./feeds/packages/lang
+git clone -b openwrt-25.12 --single-branch https://github.com/immortalwrt/packages.git packages_2512
+git reset --hard 4fd3857be01f07579190f5150db43cf3a0fcef43
+rm -rf ./feeds/packages/lang/golang
+mv ./packages_2512/lang/golang ./feeds/packages/lang
