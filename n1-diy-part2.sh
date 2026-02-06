@@ -64,6 +64,6 @@ sed -i '/\.\/root\/\.ssh\//i./etc/etc/frp/ \\' package/others/luci-app-amlogic/l
 # Update Golang
 git clone -b openwrt-25.12 --single-branch https://github.com/immortalwrt/packages.git packages_2512
 cd packages_2512
-git reset --hard 4fd3857be01f07579190f5150db43cf3a0fcef43
+git reset --hard 60e11ad
 rm -rf ../feeds/packages/lang/golang
 mv ./lang/golang ../feeds/packages/lang

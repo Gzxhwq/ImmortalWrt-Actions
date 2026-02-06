@@ -37,6 +37,6 @@ sed -i 's/192.168.1.1/10.10.10.200/g' package/base-files/files/bin/config_genera
 # Update Golang
 git clone -b openwrt-25.12 --single-branch https://github.com/immortalwrt/packages.git packages_2512
 cd packages_2512
-git reset --hard 4fd3857be01f07579190f5150db43cf3a0fcef43
+git reset --hard 60e11ad
 rm -rf ../feeds/packages/lang/golang
 mv ./lang/golang ../feeds/packages/lang
