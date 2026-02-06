@@ -35,6 +35,6 @@ sed -i 's/192.168.1.1/10.10.10.200/g' package/base-files/files/bin/config_genera
 # rm -rf ./tmp
 
 # Update Golang
-git clone -b master --single-branch https://github.com/immortalwrt/packages.git packages_master
-rm -rf ./feeds/packages/lang/golang
-mv ./packages_master/lang/golang ./feeds/packages/lang
+# git clone -b master --single-branch https://github.com/immortalwrt/packages.git packages_master
+# rm -rf ./feeds/packages/lang/golang
+# mv ./packages_master/lang/golang ./feeds/packages/lang
