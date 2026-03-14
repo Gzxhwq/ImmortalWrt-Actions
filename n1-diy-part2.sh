@@ -38,13 +38,13 @@
 
 
 # 1.Set the download repository of the OpenWrt files to your github.com
-sed -i "s|https.*/OpenWrt|https://github.com/Gzxhwq/ImmortalWrt-Actions|g" package/others/luci-app-amlogic/luci-app-amlogic/root/etc/config/amlogic
+sed -i "s|amlogic_firmware_repo.*|amlogic_firmware_repo 'https://github.com/Gzxhwq/ImmortalWrt-Actions'|g" package/others/luci-app-amlogic/luci-app-amlogic/root/etc/config/amlogic
 # 2.Set the keywords of Tags in your github.com Releases
 sed -i "s|ARMv8|Phicomm_N1|g" package/others/luci-app-amlogic/luci-app-amlogic/root/etc/config/amlogic
 # 3.Set the suffix of the OPENWRT files in your github.com Releases
 #sed -i "s|.img.gz|.OPENWRT_SUFFIX|g" package/others/luci-app-amlogic/luci-app-amlogic/root/etc/config/amlogic
 # 4.Set the download path of the kernel in your github.com repository
-sed -i "s|opt/kernel|https://github.com/breakings/OpenWrt|g" package/others/luci-app-amlogic/luci-app-amlogic/root/etc/config/amlogic
+sed -i "s|amlogic_kernel_path.*|amlogic_kernel_path 'https://github.com/ophub/kernel'|g" package/others/luci-app-amlogic/luci-app-amlogic/root/etc/config/amlogic
 # 5.Set default filesystem in your github.com repository
 sed -i "s|ext4|btrfs|g" package/others/luci-app-amlogic/luci-app-amlogic/root/etc/config/amlogic
 # 6.Extend backup file list in openwrt-backup script

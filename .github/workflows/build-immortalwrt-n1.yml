@@ -191,7 +191,8 @@ jobs:
         env:
           OPENWRT_ARMSR: openwrt/bin/targets/*/*/*.tar.gz
           PACKAGE_SOC: s905d
-          KERNEL_VERSION_NAME: 6.6.y_6.12.y
+          KERNEL_REPO_URL: ophub/kernel
+          KERNEL_VERSION_NAME: 6.12.x_6.18.y
           KERNEL_AUTO_LATEST: true
           GZIP_IMGS: true
           WHOAMI: Gzxhwq
